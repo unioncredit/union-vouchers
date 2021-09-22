@@ -1,3 +1,5 @@
+# Check if voucher is now a member
+
 CALLDATA=$(seth calldata "checkIsMember(address)(bool)" $VOUCHER_ADDRESS);
 RESP=$(seth call $USER_MANAGER_ADDRESS $CALLDATA | seth --to-dec);
 

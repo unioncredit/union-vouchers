@@ -19,6 +19,12 @@ contract Multicall is Ownable {
         }
     }
 
+    function call(address target, bytes memory callData) public onlyOwner returns (bytes memory) {
+        (bool success, bytes memory ret) = target.call(callData);
+        require(success);
+        return ret;
+    }
+
     // Helper functions
     function getEthBalance(address addr) public view returns (uint256 balance) {
         balance = addr.balance;
