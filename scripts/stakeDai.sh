@@ -20,4 +20,4 @@ daiBalance=$(seth call $DAI_ADDRESS "balanceOf(address)(uint256)" $VOUCHER_ADDRE
 echo "[*] staking dai :: $daiBalance"
 stakeCallData=$(seth calldata "stake(uint256)" $daiBalance);
 
-seth --gas-price=10000000000 send $VOUCHER_ADDRESS "call(address,bytes)" $USER_MANAGER_ADDRESS $stakeCallData;
+seth send $VOUCHER_ADDRESS "call(address,bytes)" $USER_MANAGER_ADDRESS $stakeCallData;
