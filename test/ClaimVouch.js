@@ -7,6 +7,8 @@ describe("ClaimVouch", function () {
 
   const vouchAmount = ethers.utils.parseEther("100");
 
+  const maxClaimAmount = "10";
+
   beforeEach(async () => {
     const signers = await ethers.getSigners();
     account = signers[0];
@@ -15,7 +17,11 @@ describe("ClaimVouch", function () {
     userManagerMock = await UserManagerMock.deploy();
 
     const ClaimVouch = await ethers.getContractFactory("ClaimVouch");
-    claimVouch = await ClaimVouch.deploy(vouchAmount, userManagerMock.address);
+    claimVouch = await ClaimVouch.deploy(
+      vouchAmount,
+      userManagerMock.address,
+      maxClaimAmount
+    );
 
     const ERC20Mock = await ethers.getContractFactory("MockToken");
     erc20Mock = await ERC20Mock.deploy();
@@ -36,8 +42,8 @@ describe("ClaimVouch", function () {
     expect(balance.toString()).to.equal(amount);
   }
 
-  async function send() {
-    await account.sendTransaction({
+  async function send(acc) {
+    await (acc || account).sendTransaction({
       to: claimVouch.address,
       value: 0,
     });
@@ -72,5 +78,17 @@ describe("ClaimVouch", function () {
     ]);
     await claimVouch.call(erc20Mock.address, calldata);
     await expectBalanceOf(claimVouch.address, "0");
+  });
+
+  it("only 100 distinc address can claim", async () => {
+    const accounts = await ethers.getSigners();
+    console.log("[*] accounts: ", accounts.length);
+    for (let i = 0; i < Number(maxClaimAmount); i++) {
+      const acc = accounts[i];
+      await claimVouch.addEligible([acc.address]);
+      await send(acc);
+    }
+
+    expect(send(accounts[20])).to.be.rejectedWith(Error);
   });
 });
