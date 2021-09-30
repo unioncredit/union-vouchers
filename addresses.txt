@@ -4,6 +4,11 @@ Voucher 1 - mintDonations (old)
 Voucher 2 - poap (old)
 0x61c2E4426D7E138E2993bbA914928385274aF0E3
 
-Voucher 3 - test claim vouch
+Claim Vouch 1
 0xd383c0E29C118BBbb1521D22d4E807a89B844bC7
 
+Claim Vouch 2
+0x0684607A522f0234b132F70525b7464619BE0333
+
+Claim Vouch 3
+0xf98b02EB8e85F24De18c80c18517113D8ab808cf

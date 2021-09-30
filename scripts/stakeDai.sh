@@ -15,9 +15,24 @@ else
 fi
 
 daiBalance=$(seth call $DAI_ADDRESS "balanceOf(address)(uint256)" $VOUCHER_ADDRESS);
+stakedAmount=$(seth call $USER_MANAGER_ADDRESS "getStakerBalance(address)(uint256)" $VOUCHER_ADDRESS);
 
-# Now we can stake our dai
-echo "[*] staking dai :: $daiBalance"
-stakeCallData=$(seth calldata "stake(uint256)" $daiBalance);
+echo "[*] dai balance: $daiBalance, staked amount: $stakedAmount";
 
-seth send $VOUCHER_ADDRESS "call(address,bytes)" $USER_MANAGER_ADDRESS $stakeCallData;
+stakeDai() {
+  # Now we can stake our dai
+  echo "[*] staking dai :: $daiBalance"
+  stakeCallData=$(seth calldata "stake(uint256)" $daiBalance);
+
+  seth send $VOUCHER_ADDRESS "call(address,bytes)" $USER_MANAGER_ADDRESS $stakeCallData;
+}
+
+while true; do
+    read -p "Do you wish to continue? (y/N) " yn
+    case $yn in
+      [Yy]* ) stakeDai; break;;
+      [Nn]* ) exit;;
+      * ) exit;;
+    esac
+done
+
