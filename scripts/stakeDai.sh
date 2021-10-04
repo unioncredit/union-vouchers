@@ -24,7 +24,7 @@ stakeDai() {
   echo "[*] staking dai :: $daiBalance"
   stakeCallData=$(seth calldata "stake(uint256)" $daiBalance);
 
-  seth send $VOUCHER_ADDRESS "call(address,bytes)" $USER_MANAGER_ADDRESS $stakeCallData;
+  seth send --gas-price $(echo "$(seth gas-price) * 10" | bc) $VOUCHER_ADDRESS "call(address,bytes)" $USER_MANAGER_ADDRESS $stakeCallData;
 }
 
 while true; do

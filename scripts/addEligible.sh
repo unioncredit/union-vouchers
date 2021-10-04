@@ -1,7 +1,9 @@
+chunkSize=1000
+
 addEligible() {
-  echo $1;
+  echo "[*] adding eligible addresses ($chunkSize)";
   calldata=$(seth calldata "addEligible(address[])" "[$1]");
-  ETH_GAS=3000000 seth send $VOUCHER_ADDRESS $calldata;
+  seth --gas-price 15000000000 send $VOUCHER_ADDRESS $calldata;
 }
 
 if [[ -z "$ETH_PASSWORD" ]]
@@ -10,8 +12,11 @@ then
   exit;
 fi
 
-export -f addEligible;
+input=$(cat $1 | xargs -n $chunkSize | sed 's/ /,/g' | xargs -n1 > tmp.txt);
 
-chunkSize=2;
+while IFS= read -r line; do
+    addEligible $line;
+done < "./tmp.txt"
 
-cat $1 | xargs -n $chunkSize | sed 's/ /,/g' | xargs -n1 -I {} bash -c 'addEligible "{}"'
+rm tmp.txt;
+
