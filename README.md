@@ -1,6 +1,6 @@
 # Union Bulk Voucher
 
-Send an empty 0 MATIC transaction to one of the following addresses to recieve a vouch
+Send an empty 0 MATIC transaction (setting gas limit to 300k) to one of the following addresses to recieve a vouch
 
 ## Vouchers
 
@@ -11,7 +11,7 @@ If you have donated
 
 ### POAPs owners
 
-If you own 3 or more POAPs
+If you own 3 or more POAPs (on mainnet)
 `0xbABB11a492D44a92B6D4AD2c9D75A4efbf17Ac08`
 
 ### Write Race
