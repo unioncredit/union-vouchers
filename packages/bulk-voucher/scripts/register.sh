@@ -7,11 +7,11 @@ allowance=$(seth call $UNION_ADDRESS $allowanceCalldata | seth --to-dec);
 if [[ $allowance -eq 0 ]]
 then
   echo "[*] allowance is 0 approving..."
-  seth send $UNION_ADDRESS "approve(address,uint256)" $USER_MANAGER_ADDRESS $MAX_UINT256;
+  seth --gas-price=500000000000 send $UNION_ADDRESS "approve(address,uint256)" $USER_MANAGER_ADDRESS $MAX_UINT256;
 else
   echo "[*] allowance is $allowance";
 fi
 
 echo "[*] register as union member";
-seth --gas-price=10000000000 send $USER_MANAGER_ADDRESS "registerMember(address)" $VOUCHER_ADDRESS;
+seth --gas-price=500000000000 send $USER_MANAGER_ADDRESS "registerMember(address)" $VOUCHER_ADDRESS;
 

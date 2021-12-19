@@ -3,8 +3,11 @@ const fs = require("fs");
 const { request, gql } = require("graphql-request");
 
 const pageSize = 1000;
-const dumpPath = path.resolve("poapAddressesDump.txt");
-const url = "https://api.thegraph.com/subgraphs/name/amxx/poap";
+const dumpPath = path.resolve("poapAddressesDump-xdai.txt");
+const dumpDataPath = path.resolve("poapAddressesDump-xdai-unfiltered.json");
+// const url = "https://api.thegraph.com/subgraphs/name/amxx/poap";
+// xdai
+const url = "https://api.thegraph.com/subgraphs/name/poap-xyz/poap-xdai";
 
 async function main() {
   const query = (timestamp) => gql`
@@ -29,6 +32,8 @@ async function main() {
     const result = await request(url, query(timestamp));
     const transfers = result.transfers;
 
+    console.log(`[*] results: ${Object.keys(results).length}`);
+
     if (transfers.length < pageSize) {
       break;
     }
@@ -49,6 +54,7 @@ async function main() {
 
   console.log(`Found ${addresses.length} addresses`);
   fs.writeFileSync(dumpPath, addresses.join("\n"));
+  fs.writeFileSync(dumpDataPath, JSON.stringify(results));
 }
 
 if (require.main === module) {
